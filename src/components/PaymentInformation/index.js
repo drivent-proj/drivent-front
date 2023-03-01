@@ -56,4 +56,5 @@ export default function PaymentInformation() {
 
 const StyledTypography = styled(Typography)`
   margin-bottom: 20px !important;
+  width: 100% !important;
 `;

@@ -8,7 +8,7 @@ export const FormWrapper = styled.form`
   flex-wrap: wrap;
   margin-top: 40px;
   > div {
-    width: calc(60% - 20px);
+    width: calc(80% - 20px);
     margin: 0 10px 0 0;
   }
 
