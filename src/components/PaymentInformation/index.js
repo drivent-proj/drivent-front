@@ -1,27 +1,32 @@
 import { Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useEnrollment from '../../hooks/api/useEnrollment';
 import useTicket from '../../hooks/api/useTicket';
 import useTicketTypes from '../../hooks/api/useTicketType';
 import ContainerModality from './ContainerModality';
 import { FormWrapper } from './FormWrapper';
 
 import { hotels } from './hotelList';
+import NoEnrollmentWarning from './NoEnrollmentWarning';
 import PaymentSection from './PaymentSection';
 
 export default function PaymentInformation() {
+  const [hasEnrollment, setHasEnrollment] = useState(false);
   const [isRemote, setIsRemote] = useState(true);
   const [hasTicket, setHasTicket] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
+  const enrollment = useEnrollment();
   const ticket = useTicket();
   const ticketTypes = useTicketTypes();
 
   useEffect(() => {
+    if (enrollment?.enrollment) setHasEnrollment(true);
     if (ticket?.ticket) setHasTicket(true);
     if (ticket?.ticket?.status === 'PAID') setIsPaid(true);
-  }, [ticket.ticketLoading]);
+  }, [ticket.ticketLoading, enrollment.enrollmentLoading]);
 
-  if (ticketTypes.ticketTypeLoading || ticket.ticketLoading) return 'Carregando...';
+  if (ticketTypes.ticketTypeLoading || ticket.ticketLoading || enrollment.enrollmentLoading) return 'Carregando...';
 
   function handleSetRemote(remote) {
     remote ? setIsRemote(true) : setIsRemote(false);
@@ -30,7 +35,7 @@ export default function PaymentInformation() {
   return (
     <>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
-      <FormWrapper>
+      {hasEnrollment ? <FormWrapper>
         {!hasTicket && (
           <>
             <ContainerModality
@@ -49,7 +54,7 @@ export default function PaymentInformation() {
           </>
         )}
         {hasTicket && <PaymentSection isPaid = {isPaid} setIsPaid = {setIsPaid} ticket={ticket.ticket}/>}
-      </FormWrapper>
+      </FormWrapper> : <NoEnrollmentWarning/>}
     </>
   );
 }
