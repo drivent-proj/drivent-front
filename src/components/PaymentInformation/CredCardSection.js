@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/es/styles-compiled.css';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
+import usePostPayment from '../../hooks/api/usePostPayment';
+import dayjs from 'dayjs';
 
-const PaymentForm = () => {
+const PaymentForm = ({ ticket, setIsPaid }) => {
   const [state, setState] = useState({
     number: '',
     expiry: '',
     cvc: '',
     name: '',
     focus: '',
+    issuer: '',
+    FormData: null,
   });
   const [auxDate, setAuxDate] = useState();
+  const { processPaymentLoading, processPayment } = usePostPayment();
 
   const handleInputChange = (evt) => {
     const { name, value } = evt.target;
@@ -25,13 +31,98 @@ const PaymentForm = () => {
       setState((prev) => ({ ...prev, [name]: newValueInsertion }));
       return;
     }
-    
-    setState((prev) => ({ ...prev, [name]: value })); 
+
+    setState((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleInputFocus = (evt) => {
     setState((prev) => ({ ...prev, focus: evt.target.name }));
   };
+
+  const handleSubmit = async(evt) => {
+    evt.preventDefault();
+
+    const cardValid = checkCard();
+    if (!cardValid) return;
+
+    const cardData = {
+      issuer: issuerName,
+      number: Number(state.number),
+      name: state.name,
+      expirationDate: dayjs(auxDate).format(),
+      cvv: Number(state.cvc),
+    };
+
+    const data = { ticketId: ticket.id, cardData };
+    try {
+      await processPayment(data);
+      toast.success('Pagamento concluído!');
+      setIsPaid(true);
+    } catch (err) {
+      toast.error('Não foi possível processar seu pagamento!');
+    }
+  };
+
+  let issuerName;
+  let isValidBool;
+
+  const callbackFunction = ({ issuer }, isValid) => {
+    isValidBool = isValid;
+    if (isValid) {
+      issuerName = issuer;
+    }
+  };
+
+  function checkCard() {
+    if (!isValidBool) {
+      toast.error('Cartão inválido');
+      clearState();
+      return false;
+    }
+
+    if (state.number.length === 0) {
+      toast.error('Cartão inválido');
+      clearState();
+      return false;
+    }
+
+    if (state.name.length < 4) {
+      toast.error('Nome inválido');
+      clearState();
+      return false;
+    }
+
+    if (dayjs(auxDate) < dayjs()) {
+      toast.error('Cartão expirado');
+      clearState();
+      return false;
+    }
+
+    if (state.cvc.length !== 3) {
+      toast.error('CVV inválido');
+      clearState();
+      return false;
+    }
+
+    return true;
+  }
+
+  function clearState() {
+    issuerName = undefined;
+    isValidBool = false;
+    setTimeout(() => {
+      setState({
+        number: '',
+        expiry: '',
+        cvc: '',
+        name: '',
+        focus: '',
+        issuer: '',
+        FormData: null,
+      });
+      setAuxDate('');
+    }, 2000);
+  }
 
   return (
     <>
@@ -41,50 +132,59 @@ const PaymentForm = () => {
           expiry={state.expiry}
           cvc={state.cvc}
           name={state.name}
+          issuer={state.issuer}
           focused={state.focus}
+          callback={callbackFunction}
         />
-        <Form id="creditCardForm">
+        <Form>
           <Input
-            type='text'
-            name='number'
+            type="text"
+            name="number"
+            minLength={15}
             maxLength={16}
-            placeholder='Card Number'
+            placeholder="Card Number"
             value={state.number}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
+            required
           />
           <p>E.g: 49..., 51..., 36..., 37...</p>
           <Input
-            type='name'
-            name='name'
+            type="name"
+            name="name"
+            minLength={4}
             maxLength={21}
-            placeholder='Name'
+            placeholder="Name"
             value={state.name}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
+            required
           />
           <div>
             <HalfInput
-              type='month'
-              name='expiry'
-              placeholder='Valid Thru'
+              type="month"
+              name="expiry"
+              placeholder="Valid Thru"
               value={auxDate}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
+              required
             />
             <HalfInput
-              type='CVV'
-              name= 'cvc'
-              placeholder='CVV'
+              type="CVV"
+              name="cvc"
+              placeholder="CVV"
               value={state.cvc}
               maxLength={3}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
+              required
             />
           </div>
+          <input type="hidden" name="issuer" value={state.issuer} />
         </Form>
       </CardContainer>
-      <SubmitButton type='submit' form='creditCardForm'>FINALIZAR PAGAMENTO</SubmitButton>
+      <SubmitButton onClick={handleSubmit} disabled={processPaymentLoading ? true : false}>FINALIZAR PAGAMENTO</SubmitButton>
     </>
   );
 };
@@ -117,7 +217,7 @@ const Form = styled.form`
     border: 1px solid #898989;
     font-size: 16px;
   }
-  input[type=month] {
+  input[type='month'] {
     color: #898989;
   }
 `;
@@ -136,10 +236,10 @@ const SubmitButton = styled.button`
   height: 35px;
   border-radius: 5px;
   border: none;
-  background-color: #DDDDDD;
-  -webkit-box-shadow: 0px -1px 12px 1px rgba(221,221,221,1);
-  -moz-box-shadow: 0px -1px 12px 1px rgba(221,221,221,1);
-  box-shadow: 0px -1px 12px 1px rgba(221,221,221,1);
+  background-color: #dddddd;
+  -webkit-box-shadow: 0px -1px 12px 1px rgba(221, 221, 221, 1);
+  -moz-box-shadow: 0px -1px 12px 1px rgba(221, 221, 221, 1);
+  box-shadow: 0px -1px 12px 1px rgba(221, 221, 221, 1);
 `;
 
 export default PaymentForm;
