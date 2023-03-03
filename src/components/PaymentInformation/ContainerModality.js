@@ -3,23 +3,31 @@ import styled from 'styled-components';
 import BoxTicket from './BoxTicket';
 import BoxHotel from './BoxHotel';
 
-export default function ContainerModality({ title, modalities, handleSetRemote, type }) {
+export default function ContainerModality({ title, modalities, handleSetRemote, type, selectTicketId }) {
   const [active, setActive] = useState('');
 
   return (
     <Container>
       <Subtitle>{title}</Subtitle>
       <ContainerModalities>
-        {modalities.map((m) =>
+        {modalities?.map((m) =>
           type === 'ticket' ? (
             <BoxTicket
+              key={m.id}
               modality={m}
               active={active === m.name ? true : false}
               setActive={setActive}
               handleSetRemote={handleSetRemote}
+              selectTicketId={selectTicketId}
             />
           ) : (
-            <BoxHotel modality={m} active={active === m.name ? true : false} setActive={setActive} />
+            <BoxHotel
+              key={m.id}
+              modality={m}
+              active={active === m.name ? true : false}
+              setActive={setActive}
+              selectTicketId={selectTicketId}
+            />
           )
         )}
       </ContainerModalities>
