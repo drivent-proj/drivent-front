@@ -1,3 +1,7 @@
+import HotelInformation from '../../../components/HotelInformation';
+
 export default function Hotel() {
-  return 'Hotel: Em breve!';
+  return (
+    <HotelInformation></HotelInformation>
+  );
 }
