@@ -2,6 +2,7 @@ import { Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useTicket from '../../hooks/api/useTicket';
+import ContainerHotelPage from '../PaymentInformation/ContainerHotelPage';
 import Warning from './Warning';
 
 export default function HotelInformation() {
@@ -20,12 +21,12 @@ export default function HotelInformation() {
       {(!includesHotel || status!=='PAID') ? 
         <Warning includesHotel={includesHotel} status={status}></Warning>
         :
-        <div>OI</div>
+        <ContainerHotelPage></ContainerHotelPage>
       }
     </>
   );
 };
 
 const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
+  margin-bottom: 36px!important;
 `;
