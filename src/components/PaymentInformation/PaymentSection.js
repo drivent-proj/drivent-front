@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PaymentForm from './CredCardSection';
+import PaymentConfirmed from './PaymentConfirmed';
 
 export default function PaymentSection({ isPaid, setIsPaid, ticket }) {
   const [text, setText] = useState('Carregando...');
@@ -21,8 +22,8 @@ export default function PaymentSection({ isPaid, setIsPaid, ticket }) {
         </TicketInfoCard>
       </TicketInfo>
       <Subtitle>Pagamento</Subtitle>
-      {isPaid && <>Em Construção</>}
-      {!isPaid && <PaymentForm />}
+      {isPaid && <PaymentConfirmed/>}
+      {!isPaid && <PaymentForm ticket = {ticket} setIsPaid = {setIsPaid}/>}
     </>
   );
 }
