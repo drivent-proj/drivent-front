@@ -5,10 +5,12 @@ export default function Warning({ includesHotel, status }) {
     <StyledAdvice>
       {!includesHotel ? 
         <p>Sua modalidade de ingresso não inclui hospedagem <br/>
-        Prossiga para a escolha de atividades</p> : 
-        (status!=='PAID') &&
-      <p>Você precisa ter confirmado pagamento antes <br/>
-      de fazer a escolha de hospedagem</p>}
+        Prossiga para a escolha de atividades</p> 
+        : 
+        (status!=='PAID') 
+        &&
+        <p>Você precisa ter confirmado pagamento antes <br/>
+        de fazer a escolha de hospedagem</p>}
     </StyledAdvice>
   );
 };
