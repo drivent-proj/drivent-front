@@ -4,13 +4,13 @@ import PaymentForm from './CredCardSection';
 import PaymentConfirmed from './PaymentConfirmed';
 
 export default function PaymentSection({ isPaid, setIsPaid, ticket }) {
-  const [text, setText] = useState('Carregando...'); 
+  const [text, setText] = useState('Carregando...');
   useEffect(() => {
-    (ticket.TicketType.isRemote === true) ? 
-      setText('Online') : 
-      ((ticket.TicketType.includesHotel === true) ?
-        setText('Presencial + Com Hotel') :
-        setText('Presencial'));
+    ticket.TicketType.isRemote === true
+      ? setText('Online')
+      : ticket.TicketType.includesHotel === true
+        ? setText('Presencial + Com Hotel')
+        : setText('Presencial');
   }, [ticket.status]);
   return (
     <>
@@ -26,7 +26,7 @@ export default function PaymentSection({ isPaid, setIsPaid, ticket }) {
       {!isPaid && <PaymentForm ticket = {ticket} setIsPaid = {setIsPaid}/>}
     </>
   );
-};
+}
 
 const TicketInfo = styled.div`
   width: auto;
@@ -45,7 +45,7 @@ const TicketInfoCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #FFEED2;
+  background-color: #ffeed2;
   width: 300px;
   height: 100px;
   border-radius: 20px;

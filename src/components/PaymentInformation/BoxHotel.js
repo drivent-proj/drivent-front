@@ -1,11 +1,12 @@
 import { Container } from './BoxModality';
 
-export default function BoxModality({ modality, active, setActive }) {
+export default function BoxHotel({ modality, active, setActive, selectTicketId }) {
   return (
     <Container
       active={active}
       onClick={() => {
         setActive(modality.name);
+        selectTicketId(modality.id);
       }}
     >
       <p className="type">{modality.name}</p>
