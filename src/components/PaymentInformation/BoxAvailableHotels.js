@@ -23,5 +23,6 @@ const Box = styled.div`
   height: 264px;
   width: 100%;
   display: flex;
+  overflow-x: auto;
 `;
 
