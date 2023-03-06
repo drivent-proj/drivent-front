@@ -2,18 +2,17 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 
-
 export default function ReserveContainer({ title, modalities, handleSetRemote, type, selectTicketId }) {
-    const [active, setActive] = useState('');
+  const [active, setActive] = useState('');
 
-    return (
-        <Container>
-            <Subtitle>{title}</Subtitle>
+  return (
+    <Container>
+      <Subtitle>{title}</Subtitle>
             
-                <ReserveButton type="submit" > RESERVAR INGRESSO </ReserveButton>
+      <ReserveButton type="submit" > RESERVAR INGRESSO </ReserveButton>
             
-        </Container>
-    );
+    </Container>
+  );
 }
 
 const ReserveButton = styled.button`
@@ -27,7 +26,7 @@ const ReserveButton = styled.button`
     text-align: center;
     font-weight: 400;
 
-`
+`;
 
 const Container = styled.div`
   display: flex;
