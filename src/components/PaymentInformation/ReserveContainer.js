@@ -26,7 +26,7 @@ const ReserveButton = styled.button`
     text-align: center;
     font-weight: 400;
 
-`
+`;
 
 const Container = styled.div`
   display: flex;
