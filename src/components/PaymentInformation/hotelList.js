@@ -6,7 +6,7 @@ export const hotels = [
   },
   {
     name: 'Com Hotel',
-    price: '500',
+    price: '350',
     includesHotel: true,
   },
 ];

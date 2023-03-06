@@ -6,7 +6,7 @@ export default function BoxHotel({ modality, active, setActive, selectTicketId }
       active={active}
       onClick={() => {
         setActive(modality.name);
-        selectTicketId(modality.id);
+        selectTicketId(modality.id, true);
       }}
     >
       <p className="type">{modality.name}</p>

@@ -7,7 +7,7 @@ export default function BoxTicket({ modality, active, setActive, handleSetRemote
       onClick={() => {
         setActive(modality.name);
         handleSetRemote(modality.isRemote);
-        selectTicketId(modality.id);
+        selectTicketId(modality.id, modality.isRemote);
       }}
     >
       <p className="type">{modality.name}</p>

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import useTicket from '../../hooks/api/useTicket';
 import useTicketTypes from '../../hooks/api/useTicketType';
-
+import { saveTicket } from '../../services/ticketApi';
+import useToken from '../../hooks/useToken';
 import ContainerModality from './ContainerModality';
+import ReserveContainer from './ReserveContainer';
 import { FormWrapper } from './FormWrapper';
-
 import { hotels } from './hotelList';
 import PaymentSection from './PaymentSection';
 
@@ -15,12 +16,14 @@ export function SectionTicket() {
   const [isPaid, setIsPaid] = useState(false);
   
   const [ticketId, setTicketId] = useState();
-
+  const [total, SetTotal] = useState('');
+  const [finished, setFinished] = useState(false);
   const[typesTicket, setTypesTicket] = useState([]);
-
+  const [newTicket, setNewTicket] = useState();
   const enrollment = useEnrollment();
-  const ticket = useTicket();
+  let ticket = useTicket();
   const ticketTypes = useTicketTypes();
+  const token = useToken();
 
   useEffect(() => {
     if (ticket?.ticket) setHasTicket(true);
@@ -49,14 +52,33 @@ export function SectionTicket() {
     remote ? setIsRemote(true) : setIsRemote(false);
   }
 
-  function selectTicketId(id) {
+  function selectTicketId(id, finished) {
     setTicketId(id);
+    getPrice(id);
+    setFinished(finished);
+  }
+  
+  function getPrice(id) {
+    let total=  ticketTypes.ticketTypes.filter((m) => m.id == id)[0].price;
+    SetTotal(total); 
   }
 
   //use ticketId to create new Ticket
 
+  async function handleSubmit(event) {
+    event.preventDefault();
+    
+    try{
+      let newtick =  await saveTicket({ ticketTypeId: ticketId }, token);
+      setNewTicket(newtick);
+      setHasTicket(true);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
-    <FormWrapper>
+    <FormWrapper onSubmit={handleSubmit}>
       {!hasTicket && (
         <>
           <ContainerModality
@@ -74,9 +96,15 @@ export function SectionTicket() {
               selectTicketId={selectTicketId}
             />
           )}
+          
+          {(finished) && (<ReserveContainer 
+            title = {`Fechado! O total ficou em R$ ${total} Agora é só confirmar:`}
+
+          />)}
         </>
       )}
-      {hasTicket && <PaymentSection isPaid={isPaid} setIsPaid={setIsPaid} ticket={ticket.ticket} />}
+      
+      {hasTicket && <PaymentSection isPaid={isPaid} setIsPaid={setIsPaid} ticket={ticket.ticket || newTicket} />}
     </FormWrapper>
   );
 }
