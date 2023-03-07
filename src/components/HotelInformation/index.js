@@ -2,7 +2,7 @@ import { Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useTicket from '../../hooks/api/useTicket';
-import ContainerHotelPage from '../PaymentInformation/ContainerHotelPage';
+import ContainerHotelPage from './ContainerHotelPage';
 import Warning from './Warning';
 
 export default function HotelInformation() {
