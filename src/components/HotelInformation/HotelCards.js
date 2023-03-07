@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import useHotelsWithRoom from '../../hooks/api/useHotelWithRooms';
 import useHotelCapacity from '../../hooks/useHotelCapacity';
 
-export default function HotelCard({ hotel }) {
+export default function HotelCard({ hotel, active, setSelected, setHotelRooms }) {
   const [rooms, setRooms] = useState({});
   const hotels = useHotelsWithRoom(hotel.id);
   useEffect(() => {
@@ -13,7 +13,12 @@ export default function HotelCard({ hotel }) {
     }
   }, [hotels.hotelsLoading]);
   return(
-    <Teste>
+    <Hotel 
+      onClick={() => {
+        setSelected(hotel.id);
+        setHotelRooms(hotels.hotels.Rooms);
+      }}
+      active={active}>
       {hotels.hotels && 
       <>
         <img src={hotels.hotels.image} alt={hotels.hotels.name}></img>
@@ -27,14 +32,14 @@ export default function HotelCard({ hotel }) {
         </>}
       </>
       }
-    </Teste>
+    </Hotel>
   );
 }
 
-const Teste = styled.div`
+const Hotel = styled.div`
   height: 264px;
   width: 196px;
-  background-color: #EBEBEB;
+  background-color: ${(props) => props.active ? '#FFEED2' : '#EBEBEB'};
   margin-right: 20px;
   border-radius: 10px;
   padding: 14px;
