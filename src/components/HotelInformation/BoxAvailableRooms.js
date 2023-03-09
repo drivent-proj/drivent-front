@@ -1,13 +1,19 @@
 import styled from 'styled-components';
 import RoomCard from './RoomCards';
 
-export default function BoxAvailableRooms({ title, hotelRooms }) {
-  console.log(hotelRooms);
-  return(
+export default function BoxAvailableRooms({ title, hotelRooms, setSelectedRoom, selectedRoom }) {
+  return (
     <>
       <Subtitle>{title}</Subtitle>
       <Box>
-        {hotelRooms.length!== 0 && hotelRooms.map( room => <RoomCard room={room}></RoomCard>)}
+        {hotelRooms.length !== 0 &&
+          hotelRooms.map((room) => (
+            <RoomCard
+              room={room}
+              isSelected={selectedRoom === room.id ? true : false}
+              setSelectedRoom={setSelectedRoom}
+            />
+          ))}
       </Box>
     </>
   );

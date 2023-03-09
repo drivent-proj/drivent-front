@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import useHotelsWithRoom from '../../hooks/api/useHotelWithRooms';
 import useHotelCapacity from '../../hooks/useHotelCapacity';
 
-export default function HotelCard({ hotel, active, setSelected, setHotelRooms }) {
+export default function HotelCard({ hotel, active, setSelected, setHotelRooms, setSelectedRoom }) {
   const [rooms, setRooms] = useState({});
   const hotels = useHotelsWithRoom(hotel.id);
   useEffect(() => {
@@ -12,26 +12,29 @@ export default function HotelCard({ hotel, active, setSelected, setHotelRooms })
       setRooms(useHotelCapacity(hotels.hotels.Rooms));
     }
   }, [hotels.hotelsLoading]);
-  return(
-    <Hotel 
+  return (
+    <Hotel
       onClick={() => {
         setSelected(hotel.id);
         setHotelRooms(hotels.hotels.Rooms);
+        setSelectedRoom();
       }}
-      active={active}>
-      {hotels.hotels && 
-      <>
-        <img src={hotels.hotels.image} alt={hotels.hotels.name}></img>
-        <HotelName>{hotels.hotels.name}</HotelName>
-        {rooms?.type && 
+      active={active}
+    >
+      {hotels.hotels && (
         <>
-          <Title>Tipos de acomodação:</Title>
-          <Info>{rooms.type}</Info>
-          <Title>Vagas disponíveis:</Title>
-          <Info>{`${rooms.vacancy}`}</Info>
-        </>}
-      </>
-      }
+          <img src={hotels.hotels.image} alt={hotels.hotels.name}></img>
+          <HotelName>{hotels.hotels.name}</HotelName>
+          {rooms?.type && (
+            <>
+              <Title>Tipos de acomodação:</Title>
+              <Info>{rooms.type}</Info>
+              <Title>Vagas disponíveis:</Title>
+              <Info>{`${rooms.vacancy}`}</Info>
+            </>
+          )}
+        </>
+      )}
     </Hotel>
   );
 }
@@ -39,11 +42,11 @@ export default function HotelCard({ hotel, active, setSelected, setHotelRooms })
 const Hotel = styled.div`
   height: 264px;
   width: 196px;
-  background-color: ${(props) => props.active ? '#FFEED2' : '#EBEBEB'};
+  background-color: ${(props) => (props.active ? '#FFEED2' : '#EBEBEB')};
   margin-right: 20px;
   border-radius: 10px;
   padding: 14px;
-  img{
+  img {
     height: 109px;
     width: 168px;
     border-radius: 5px;
@@ -61,7 +64,7 @@ const Title = styled.p`
   font-family: Roboto;
   font-weight: 700;
   font-size: 12px;
-  color: #3C3C3C;
+  color: #3c3c3c;
   margin-top: 16px;
 `;
 

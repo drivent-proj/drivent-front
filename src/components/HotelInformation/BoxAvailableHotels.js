@@ -3,19 +3,22 @@ import styled from 'styled-components';
 import useHotels from '../../hooks/api/useHotels';
 import HotelCard from './HotelCards';
 
-export default function BoxAvailableHotels({ title, selected, setSelected, setHotelRooms }) {
+export default function BoxAvailableHotels({ title, selected, setSelected, setHotelRooms, setSelectedRoom }) {
   const hotels = useHotels();
-  return(
+  return (
     <>
       <Subtitle>{title}</Subtitle>
-      <BoxHotelCards>{hotels.hotels && 
-      hotels.hotels.map(h => 
-        <HotelCard 
-          hotel={h}
-          active={selected===h.id}
-          setSelected={setSelected}
-          setHotelRooms={setHotelRooms}>
-        </HotelCard>)}
+      <BoxHotelCards>
+        {hotels.hotels &&
+          hotels.hotels.map((h) => (
+            <HotelCard
+              hotel={h}
+              active={selected === h.id}
+              setSelected={setSelected}
+              setHotelRooms={setHotelRooms}
+              setSelectedRoom={setSelectedRoom}
+            ></HotelCard>
+          ))}
       </BoxHotelCards>
     </>
   );
@@ -35,4 +38,3 @@ const BoxHotelCards = styled.div`
   overflow-x: auto;
   margin-bottom: 53px;
 `;
-
