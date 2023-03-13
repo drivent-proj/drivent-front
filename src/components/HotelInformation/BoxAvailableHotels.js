@@ -1,9 +1,15 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import useHotels from '../../hooks/api/useHotels';
 import HotelCard from './HotelCards';
 
-export default function BoxAvailableHotels({ title, selected, setSelected, setHotelRooms, setSelectedRoom }) {
+export default function BoxAvailableHotels({
+  title,
+  selected,
+  setSelected,
+  setHotelRooms,
+  setSelectedRoom,
+  setSelectedHotel,
+}) {
   const hotels = useHotels();
   return (
     <>
@@ -12,11 +18,13 @@ export default function BoxAvailableHotels({ title, selected, setSelected, setHo
         {hotels.hotels &&
           hotels.hotels.map((h) => (
             <HotelCard
+              key={h.id}
               hotel={h}
               active={selected === h.id}
               setSelected={setSelected}
               setHotelRooms={setHotelRooms}
               setSelectedRoom={setSelectedRoom}
+              setSelectedHotel={setSelectedHotel}
             ></HotelCard>
           ))}
       </BoxHotelCards>

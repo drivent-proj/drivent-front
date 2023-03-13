@@ -72,9 +72,7 @@ export function SectionTicket() {
       let newtick = await saveTicket({ ticketTypeId: ticketId }, token);
       setNewTicket(newtick);
       setHasTicket(true);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   const ticketWithHotel = ticketTypes.ticketTypes.filter((t) => t.isRemote === false && t.includesHotel === true);

@@ -2,8 +2,6 @@ import { Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useEnrollment from '../../hooks/api/useEnrollment';
-import useTicket from '../../hooks/api/useTicket';
-import useTicketTypes from '../../hooks/api/useTicketType';
 
 import NoEnrollmentWarning from './NoEnrollmentWarning';
 import { SectionTicket } from './SectionTicket';
