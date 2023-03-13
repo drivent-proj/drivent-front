@@ -2,16 +2,19 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import BoxAvailableHotels from './BoxAvailableHotels';
 import BoxAvailableRooms from './BoxAvailableRooms';
-
+import useChangeBooking from '../../hooks/api/useChangeBooking';
 import useBookingRoom from '../../hooks/api/useBookingRoom';
 import { toast } from 'react-toastify';
 
-export default function ContainerHotelPage() {
+
+export default function ContainerHotelPage({changing, setChanging}) {
   const [selected, setSelected] = useState('');
   const [selectedRoom, setSelectedRoom] = useState('');
   const [hotelRooms, setHotelRooms] = useState([]);
 
+  const { bookingUpdateLoading, updateBooking } = useChangeBooking();
   const { bookingLoading, createBooking } = useBookingRoom();
+
 
   async function bookingRoom() {
     try {
@@ -19,6 +22,17 @@ export default function ContainerHotelPage() {
       toast('Reserva feita com sucesso!');
     } catch (err) {
       toast('Não foi possível realizar a reserva!');
+    }
+  }
+
+  async function changeBooking() {
+    try {
+      await updateBooking({ roomId: selectedRoom });
+      toast('Reserva alterada com sucesso!');
+      setChanging(false)
+    } catch (err) {
+      console.log(err)
+      toast('Não foi possível alterar a reserva!');
     }
   }
 
@@ -43,7 +57,7 @@ export default function ContainerHotelPage() {
       {selectedRoom && (
         <Button
           onClick={() => {
-            bookingRoom();
+            changing? changeBooking() : bookingRoom();
           }}
           disabled={bookingLoading}
         >
