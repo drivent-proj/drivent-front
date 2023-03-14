@@ -11,7 +11,7 @@ export default function HotelInformation() {
   const [includesHotel, setIncludesHotel] = useState(false);
   const [status, setStatus] = useState('');
   const ticket = useTicket();
-  const [changing, setChanging] = useState(true)
+  const [changing, setChanging] = useState(true);
 
   const { booking, bookingLoading } = useGetBooking();
 
@@ -27,7 +27,11 @@ export default function HotelInformation() {
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
       {notIncludeOrNotPaid && <Warning includesHotel={includesHotel} status={status}></Warning>}
-      {(booking && !changing) ? <InfoBookedRoom changing = {changing} setChanging = {setChanging} /> : <ContainerHotelPage changing = {changing} setChanging = {setChanging} />}
+      {booking && !changing ? (
+        <InfoBookedRoom changing={changing} setChanging={setChanging} />
+      ) : (
+        <ContainerHotelPage changing={changing} setChanging={setChanging} />
+      )}
     </>
   );
 }
