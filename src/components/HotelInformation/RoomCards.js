@@ -44,7 +44,7 @@ export default function RoomCard({ room, isSelected, setSelectedRoom }) {
       disabled={disabled}
     >
       <p>{room.name}</p>
-      <BoxIcons>{arrayIcons.map((icon) => icon)}</BoxIcons>
+      {arrayIcons.map((icon) => <BoxIcons>{icon}</BoxIcons>)}
     </Room>
   );
 }

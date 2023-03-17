@@ -16,7 +16,7 @@ const PaymentForm = ({ ticket, setIsPaid }) => {
     issuer: '',
     FormData: null,
   });
-  const [auxDate, setAuxDate] = useState();
+  const [auxDate, setAuxDate] = useState(undefined);
   const { processPaymentLoading, processPayment } = usePostPayment();
 
   const handleInputChange = (evt) => {
@@ -91,8 +91,14 @@ const PaymentForm = ({ ticket, setIsPaid }) => {
       clearState();
       return false;
     }
+    
+    if (!auxDate) {
+      toast.error('Data de expiração inválida');
+      clearState();
+      return false;
+    }
 
-    if (dayjs(auxDate) < dayjs()) {
+    if ((dayjs(auxDate) < dayjs()) || !auxDate) {
       toast.error('Cartão expirado');
       clearState();
       return false;
