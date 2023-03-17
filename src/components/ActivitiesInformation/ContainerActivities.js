@@ -6,8 +6,6 @@ export default function ContainerActivities() {
   const { activities, activitiesLoading } = useActivities();
   const [selectDay, setSelectDay] = useState();
 
-  console.log(activities);
-
   if (activitiesLoading) return 'Carregando...';
 
   return (
