@@ -38,7 +38,7 @@ const Card = styled.div`
   width: 93%;
   height: ${(props) => props.height};
   padding: 12px 0;
-  background-color: #f1f1f1;
+  background-color: #e0e0e0;
   margin: 7px 0;
   border-radius: 5px;
   display: flex;
