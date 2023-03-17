@@ -9,6 +9,7 @@ export default function BoxAvailableRooms({ title, hotelRooms, setSelectedRoom, 
         {hotelRooms.length !== 0 &&
           hotelRooms.map((room) => (
             <RoomCard
+              key = {room.id}
               room={room}
               isSelected={selectedRoom === room.id ? true : false}
               setSelectedRoom={setSelectedRoom}

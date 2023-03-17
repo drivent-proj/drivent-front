@@ -6,18 +6,25 @@ import useChangeBooking from '../../hooks/api/useChangeBooking';
 import useBookingRoom from '../../hooks/api/useBookingRoom';
 import { toast } from 'react-toastify';
 
-export default function ContainerHotelPage({ changing, setChanging }) {
+export default function ContainerHotelPage({
+  changing,
+  setChanging,
+  setBooking,
+  setSelectedHotel,
+  setHotelRooms,
+  hotelRooms,
+}) {
   const [selected, setSelected] = useState('');
   const [selectedRoom, setSelectedRoom] = useState('');
-  const [hotelRooms, setHotelRooms] = useState([]);
 
-  const { bookingUpdateLoading, updateBooking } = useChangeBooking();
+  const { updateBooking } = useChangeBooking();
   const { bookingLoading, createBooking } = useBookingRoom();
 
   async function bookingRoom() {
     try {
-      await createBooking({ roomId: selectedRoom });
+      const booking = await createBooking({ roomId: selectedRoom });
       toast('Reserva feita com sucesso!');
+      setBooking(booking);
     } catch (err) {
       toast('Não foi possível realizar a reserva!');
     }
@@ -25,11 +32,11 @@ export default function ContainerHotelPage({ changing, setChanging }) {
 
   async function changeBooking() {
     try {
-      await updateBooking({ roomId: selectedRoom });
+      const booking = await updateBooking({ roomId: selectedRoom });
       toast('Reserva alterada com sucesso!');
       setChanging(false);
+      setBooking(booking);
     } catch (err) {
-      console.log(err);
       toast('Não foi possível alterar a reserva!');
     }
   }
@@ -42,6 +49,7 @@ export default function ContainerHotelPage({ changing, setChanging }) {
         setSelected={setSelected}
         setHotelRooms={setHotelRooms}
         setSelectedRoom={setSelectedRoom}
+        setSelectedHotel={setSelectedHotel}
       ></BoxAvailableHotels>
       {Object.keys(hotelRooms).length !== 0 && (
         <BoxAvailableRooms

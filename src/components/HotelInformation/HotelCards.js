@@ -5,7 +5,7 @@ import useAllBookings from '../../hooks/api/useAllBookings';
 import useHotelsWithRoom from '../../hooks/api/useHotelWithRooms';
 import useHotelCapacity from '../../hooks/useHotelCapacity';
 
-export default function HotelCard({ hotel, active, setSelected, setHotelRooms, setSelectedRoom }) {
+export default function HotelCard({ hotel, active, setSelected, setHotelRooms, setSelectedRoom, setSelectedHotel }) {
   const [rooms, setRooms] = useState({});
   const [bookingCount, setBookingCount] = useState([]);
   const [vacancyCount, setVacancyCount] = useState(0);
@@ -23,6 +23,7 @@ export default function HotelCard({ hotel, active, setSelected, setHotelRooms, s
     <Hotel
       onClick={() => {
         setSelected(hotel.id);
+        setSelectedHotel(hotel);
         setHotelRooms(hotels.hotels.Rooms);
         setSelectedRoom();
       }}

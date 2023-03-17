@@ -11,9 +11,20 @@ export default function HotelInformation() {
   const [includesHotel, setIncludesHotel] = useState(false);
   const [status, setStatus] = useState('');
   const ticket = useTicket();
-  const [changing, setChanging] = useState(true);
+  const [changing, setChanging] = useState(false);
+  const [booking, setBooking] = useState(undefined);
+  const [bookingLoading, setbookingLoading] = useState(undefined);
+  const [selectedHotel, setSelectedHotel] = useState(undefined);
+  const [hotelRooms, setHotelRooms] = useState([]);
 
-  const { booking, bookingLoading } = useGetBooking();
+  const bookingHook = useGetBooking();
+
+  useEffect(() => {
+    setbookingLoading(bookingHook.bookingLoading);
+    if (!bookingHook.bookingLoading) {
+      setBooking(bookingHook.booking);
+    }
+  }, [bookingHook.bookingLoading]);
 
   useEffect(() => {
     if (ticket?.ticket) {
@@ -28,9 +39,23 @@ export default function HotelInformation() {
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
       {notIncludeOrNotPaid && <Warning includesHotel={includesHotel} status={status}></Warning>}
       {booking && !changing ? (
-        <InfoBookedRoom changing={changing} setChanging={setChanging} />
+        <InfoBookedRoom
+          changing={changing}
+          setChanging={setChanging}
+          booking={booking}
+          selectedHotel={selectedHotel}
+          hotelRooms={hotelRooms}
+          setSelectedHotel={setSelectedHotel}
+        />
       ) : (
-        <ContainerHotelPage changing={changing} setChanging={setChanging} />
+        <ContainerHotelPage
+          changing={changing}
+          setChanging={setChanging}
+          setBooking={setBooking}
+          setSelectedHotel={setSelectedHotel}
+          setHotelRooms={setHotelRooms}
+          hotelRooms={hotelRooms}
+        />
       )}
     </>
   );
