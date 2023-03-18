@@ -1,24 +1,24 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import useActivities from '../../hooks/api/useActivities';
+import LocalsContainer from './LocalsContainer';
 
 export default function ContainerActivities() {
   const { activities, activitiesLoading } = useActivities();
   const [selectDay, setSelectDay] = useState();
-
-  console.log(activities);
+  const [dayActivities, setDayActivities] = useState();
 
   if (activitiesLoading) return 'Carregando...';
 
   return (
     <>
-      <Subtitle>Primeiro, filtre pelo dia do evento: </Subtitle>
+      {!selectDay && <Subtitle>Primeiro, filtre pelo dia do evento: </Subtitle>}
       <BoxButton>
         {activities.map((activity) => (
           <Button
             selected={activity.date === selectDay ? true : false}
             onClick={() => {
-              console.log(activity.activies); // use to render activies
+              setDayActivities(activity.activies); // use to render activies
               setSelectDay(activity.date);
             }}
           >
@@ -26,6 +26,7 @@ export default function ContainerActivities() {
           </Button>
         ))}
       </BoxButton>
+      {selectDay && <LocalsContainer dayActivities={dayActivities} selectDay={selectDay}/>}
     </>
   );
 }
@@ -34,14 +35,14 @@ const Subtitle = styled.p`
   font-family: Roboto;
   font-size: 20px;
   color: #8e8e8e;
-  margin-bottom: 18px;
+  margin-bottom: 8px;
 `;
 
 const BoxButton = styled.div`
   display: flex;
   gap: 20px;
 
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 const Button = styled.button`
