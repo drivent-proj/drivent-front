@@ -59,7 +59,7 @@ export function SectionTicket() {
   }
 
   function getPrice(id) {
-    let total = ticketTypes.ticketTypes.filter((m) => m.id == id)[0].price;
+    let total = ticketTypes.ticketTypes.filter((m) => m.id === id)[0].price;
     SetTotal(total);
   }
 

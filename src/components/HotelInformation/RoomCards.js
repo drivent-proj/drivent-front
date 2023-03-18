@@ -44,7 +44,7 @@ export default function RoomCard({ room, isSelected, setSelectedRoom }) {
       disabled={disabled}
     >
       <p>{room.name}</p>
-      {arrayIcons.map((icon) => <BoxIcons>{icon}</BoxIcons>)}
+      <div>{arrayIcons.map((icon) => <BoxIcons>{icon}</BoxIcons>)}</div>
     </Room>
   );
 }
@@ -67,6 +67,10 @@ const Room = styled.div`
   svg {
     font-size: 24px;
     color: ${(props) => (props.disabled ? '#8C8C8C' : '')};
+  }
+  
+  div {
+    display: flex;
   }
 `;
 
