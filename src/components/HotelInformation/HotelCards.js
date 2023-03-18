@@ -1,17 +1,24 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
+import useAllBookings from '../../hooks/api/useAllBookings';
 import useHotelsWithRoom from '../../hooks/api/useHotelWithRooms';
 import useHotelCapacity from '../../hooks/useHotelCapacity';
 
 export default function HotelCard({ hotel, active, setSelected, setHotelRooms, setSelectedRoom, setSelectedHotel }) {
   const [rooms, setRooms] = useState({});
+  const [bookingCount, setBookingCount] = useState([]);
+  const [vacancyCount, setVacancyCount] = useState(0);
   const hotels = useHotelsWithRoom(hotel.id);
+  const allBookings = useAllBookings(hotel.id);
+
   useEffect(() => {
     if (hotels.hotels) {
       setRooms(useHotelCapacity(hotels.hotels.Rooms));
+      setBookingCount(allBookings.allBookings);
     }
-  }, [hotels.hotelsLoading]);
+    if(rooms.vacancy && bookingCount) setVacancyCount(rooms.vacancy-bookingCount.length);
+  }, [hotels.hotelsLoading, allBookings.getAllBookingLoading, bookingCount]);
   return (
     <Hotel
       onClick={() => {
@@ -31,7 +38,7 @@ export default function HotelCard({ hotel, active, setSelected, setHotelRooms, s
               <Title>Tipos de acomodação:</Title>
               <Info>{rooms.type}</Info>
               <Title>Vagas disponíveis:</Title>
-              <Info>{`${rooms.vacancy}`}</Info>
+              <Info>{`${vacancyCount}`}</Info>
             </>
           )}
         </>

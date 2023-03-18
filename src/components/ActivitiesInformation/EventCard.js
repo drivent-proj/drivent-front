@@ -29,7 +29,7 @@ export default function EventCard({ activity, selectDay }) {
           {start} - {end}
         </p>
       </CardInfo>
-      <PlacesContainer />
+      <PlacesContainer maxCapacity={activity.capacity} subscribes={activity.SubscribeActivity.length}/>
     </Card>
   );
 }
