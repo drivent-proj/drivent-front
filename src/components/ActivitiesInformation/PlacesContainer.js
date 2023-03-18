@@ -1,11 +1,13 @@
-import { CgEnter } from 'react-icons/cg';
+import { CgCloseO, CgEnter } from 'react-icons/cg';
 import styled from 'styled-components';
+import useActivityCapacity from '../../hooks/useActivityCapacity';
 
-export default function PlacesContainer() {
+export default function PlacesContainer({ maxCapacity, subscribes }) {
+  const capacity = useActivityCapacity(maxCapacity, subscribes);
   return (
-    <Container>
-      <CgEnter size={30} color={'#078632'} />
-      <p>27 vagas</p>
+    <Container capacity={capacity}>
+      {capacity ? <CgEnter size={30} color={'#078632'} /> : <CgCloseO size={25} color={'#CC6666'} />}
+      <p>{(capacity) ? (capacity!==1) ? `${capacity} vagas` : '1 vaga' : 'Esgotado'}</p>
     </Container>
   );
 }
@@ -20,8 +22,8 @@ const Container = styled.div`
   align-items: center;
 
   p {
-    margin-top: 4px;
+    margin-top: 6px;
     font-size: 12px;
-    color: #078632;
+    color: ${ props => props.capacity ? '#078632' : '#CC6666'};
   }
 `;
