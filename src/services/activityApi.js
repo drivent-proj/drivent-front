@@ -9,3 +9,4 @@ export async function getActivities(token) {
 
   return response.data;
 }
+

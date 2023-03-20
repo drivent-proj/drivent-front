@@ -38,7 +38,7 @@ export default function HotelInformation() {
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
       {notIncludeOrNotPaid && <Warning includesHotel={includesHotel} status={status}></Warning>}
-      {booking && !changing ? (
+      {(booking && !changing && includesHotel && status === 'PAID') &&
         <InfoBookedRoom
           changing={changing}
           setChanging={setChanging}
@@ -47,7 +47,7 @@ export default function HotelInformation() {
           hotelRooms={hotelRooms}
           setSelectedHotel={setSelectedHotel}
         />
-      ) : (
+      }  {((!booking && changing && includesHotel && status === 'PAID') &&
         <ContainerHotelPage
           changing={changing}
           setChanging={setChanging}

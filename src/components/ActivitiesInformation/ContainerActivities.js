@@ -7,9 +7,9 @@ export default function ContainerActivities() {
   const { activities, activitiesLoading } = useActivities();
   const [selectDay, setSelectDay] = useState();
   const [dayActivities, setDayActivities] = useState();
+  const [reload, setReload] = useState(false);
 
   if (activitiesLoading) return 'Carregando...';
-
   return (
     <>
       {!selectDay && <Subtitle>Primeiro, filtre pelo dia do evento: </Subtitle>}
@@ -20,13 +20,14 @@ export default function ContainerActivities() {
             onClick={() => {
               setDayActivities(activity.activies); // use to render activies
               setSelectDay(activity.date);
+
             }}
           >
             {activity.weekday}, {activity.date}
           </Button>
         ))}
       </BoxButton>
-      {selectDay && <LocalsContainer dayActivities={dayActivities} selectDay={selectDay}/>}
+      {selectDay && <LocalsContainer dayActivities={dayActivities} selectDay={selectDay} setReload= {setReload}/>}
     </>
   );
 }
